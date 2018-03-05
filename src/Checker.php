@@ -16,6 +16,8 @@ class Checker
      */
     public $remaining = 0;
 
+    public $from_cache;
+
     /**
      * @var boolean
      */
@@ -72,32 +74,35 @@ class Checker
 
         if ($this->cache_checks && Cache::has($cacheKey)) {
 
-            $cached = Cache::get($cacheKey);
+            $data = Cache::get($cacheKey);
 
-            return $this->decideIsValid($cached);
+            $this->from_cache = true;
         }
 
-        try {
+        if (!$this->from_cache) {
 
-            $data = $this->query($domain);
+            try {
 
-        } catch (ClientException $e) {
+                $data = $this->query($domain);
 
-            // Rate Limit exceeded
+            } catch (ClientException $e) {
 
-            if ($e->getResponse()->getStatusCode() == 429) {
+                // Rate Limit exceeded
 
-                return $this->decision_rate_limit == 'allow' ? true : false;
+                if ($e->getResponse()->getStatusCode() == 429) {
+
+                    return $this->decision_rate_limit == 'allow' ? true : false;
+                }
+
+            } catch (\Exception $e) {
+
+                return false;
             }
-
-        } catch (\Exception $e) {
-
-            return false;
         }
 
         // Store in Cache if enabled
 
-        if ($this->cache_checks) {
+        if ($this->cache_checks && !$this->from_cache) {
 
             Cache::put($cacheKey, $data, $this->cache_duration);
         }
@@ -121,7 +126,7 @@ class Checker
     {
         list($local, $domain) = explode('@', $email, 2);
 
-        return $this->checkDomain($domain);
+        return $this->allowedDomain($domain);
     }
 
     /**

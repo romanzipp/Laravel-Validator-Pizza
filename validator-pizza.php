@@ -13,7 +13,7 @@ return [
     */
    
     // Database storage enabled
-    'store_checks' => false,
+    'store_checks' => true,
 
     // Database table name
     'checks_table' => 'validator_pizza',
