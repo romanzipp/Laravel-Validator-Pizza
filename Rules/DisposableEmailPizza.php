@@ -3,6 +3,7 @@
 namespace romanzipp\ValidatorPizza\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use romanzipp\ValidatorPizza\Checker;
 
 class DisposableEmailPizza implements Rule
 {
@@ -15,7 +16,8 @@ class DisposableEmailPizza implements Rule
      */
     public function passes($attribute, $value)
     {
-        return false;
+        $checker = new Checker;
+        return $check->allowedEmail($value);
     }
 
     /**
