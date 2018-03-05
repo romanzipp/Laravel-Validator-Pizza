@@ -2,7 +2,11 @@
 
 namespace romanzipp\ValidatorPizza\Providers;
 
-class ValidatorPizzaProvider
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
+use romanzipp\ValidatorPizza\Rules\DisposableEmailPizza as ValidatorRule;
+
+class ValidatorPizzaProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -14,6 +18,8 @@ class ValidatorPizzaProvider
         $this->publishes([
             dirname(__DIR__) . '/../validator-pizza.php' => config_path('validator-pizza.php'),
         ], 'config');
+
+        Validator::extend('dispsable_pizza', ValidatorRule::class . '@validate');
     }
 
     /**
