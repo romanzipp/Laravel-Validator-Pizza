@@ -16,15 +16,18 @@ class Checker
      */
     public $remaining = 0;
 
+    /**
+     * @var bool
+     */
     public $from_cache;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $store_checks;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $cache_checks;
 

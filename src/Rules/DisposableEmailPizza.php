@@ -17,6 +17,7 @@ class DisposableEmailPizza implements Rule
     public function passes($attribute, $value)
     {
         $checker = new Checker;
+
         return $check->allowedEmail($value);
     }
 

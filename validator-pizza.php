@@ -27,7 +27,7 @@ return [
     | 
     */
 
-    // Cache enabled
+    // Cache enabled (recommended)
     'cache_checks' => true,
 
     // Duration in minutes to keep the query in cache

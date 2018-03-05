@@ -3,8 +3,6 @@
 namespace romanzipp\ValidatorPizza\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 
 class ValidatedDomain extends Model
 {
@@ -13,6 +11,12 @@ class ValidatedDomain extends Model
         'mx',
         'disposable',
         'hits',
+        'last_queried',
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
         'last_queried',
     ];
 
