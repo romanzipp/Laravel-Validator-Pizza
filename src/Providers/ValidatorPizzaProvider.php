@@ -23,7 +23,7 @@ class ValidatorPizzaProvider extends ServiceProvider
             dirname(__DIR__) . '/../migrations'
         );
 
-        Validator::extend('dispsable_pizza', ValidatorRule::class . '@validate');
+        Validator::extend('disposable_pizza', ValidatorRule::class . '@validate');
     }
 
     /**

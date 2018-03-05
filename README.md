@@ -80,7 +80,7 @@ class HomeController extends Controller
     public function handleEmail(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|dispsable_pizza',
+            'email' => 'required|email|disposable_pizza',
         ]);
 
         // ...
