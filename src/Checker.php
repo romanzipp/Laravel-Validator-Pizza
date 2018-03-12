@@ -42,6 +42,11 @@ class Checker
     private $decision_rate_limit;
 
     /**
+     * @var string
+     */
+    private $decision_no_mx;
+
+    /**
      * @var Client
      */
     private $client;
@@ -62,6 +67,8 @@ class Checker
         $this->cache_duration = config('validator-pizza.cache_duration');
 
         $this->decision_rate_limit = config('validator-pizza.decision_rate_limit');
+
+        $this->decision_no_mx = config('validator-pizza.decision_no_mx');
     }
 
     /**
@@ -190,6 +197,10 @@ class Checker
      */
     private function decideIsValid(\stdClass $data): bool
     {
-        return optional($data)->mx === true && optional($data)->disposable === false;
+        if ($this->decision_no_mx == 'deny' && optional($data)->mx !== true) {
+            return false;
+        }
+
+        return optional($data)->disposable === false;
     }
 }
