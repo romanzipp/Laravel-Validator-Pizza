@@ -18,7 +18,7 @@ class DisposableEmailPizza implements Rule
     {
         $checker = new Checker;
 
-        return $check->allowedEmail($value);
+        return $checker->allowedEmail($value);
     }
 
     /**
