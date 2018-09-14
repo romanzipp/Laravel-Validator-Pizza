@@ -16,7 +16,7 @@ class ValidatorPizzaProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            dirname(__DIR__) . '/../validator-pizza.php' => config_path('validator-pizza.php'),
+            dirname(__DIR__) . '/../config/validator-pizza.php' => config_path('validator-pizza.php'),
         ], 'config');
 
         $this->loadMigrationsFrom(
@@ -34,7 +34,7 @@ class ValidatorPizzaProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/../validator-pizza.php', 'validator-pizza'
+            dirname(__DIR__) . '/../config/validator-pizza.php', 'validator-pizza'
         );
     }
 }
