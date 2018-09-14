@@ -39,7 +39,7 @@ Add Service Provider to your app.php configuration file:
 Copy configuration to config folder:
 
 ```
-$ php artisan vendor:publish --provider=romanzipp\ValidatorPizza\Providers\ValidatorPizzaProvider
+$ php artisan vendor:publish --provider="romanzipp\ValidatorPizza\Providers\ValidatorPizzaProvider"
 ```
 
 Run the migration:
