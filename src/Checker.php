@@ -134,6 +134,10 @@ class Checker
      */
     public function allowedEmail(string $email): bool
     {
+        if ( ! str_contains($email, '@')) {
+            return false;
+        }
+
         list($local, $domain) = explode('@', $email, 2);
 
         return $this->allowedDomain($domain);
