@@ -89,7 +89,7 @@ class Checker
             $this->from_cache = true;
         }
 
-        if (!$this->from_cache) {
+        if ( ! $this->from_cache) {
 
             try {
 
@@ -112,7 +112,7 @@ class Checker
 
         // Store in Cache if enabled
 
-        if ($this->cache_checks && !$this->from_cache) {
+        if ($this->cache_checks && ! $this->from_cache) {
 
             Cache::put($cacheKey, $data, $this->cache_duration);
         }
@@ -141,9 +141,9 @@ class Checker
 
     /**
      * Query the API
-     * @param  string $domain
+     * @param  string            $domain
      * @throws ClientException
-     * @return \stdClass API response data
+     * @return \stdClass         API response data
      */
     private function query(string $domain): \stdClass
     {
@@ -158,8 +158,8 @@ class Checker
         $data = json_decode($response->getBody());
 
         return (object) [
-            'domain' => $data->domain,
-            'mx' => optional($data)->mx ?? false,
+            'domain'     => $data->domain,
+            'mx'         => optional($data)->mx ?? false,
             'disposable' => optional($data)->disposable ?? false,
         ];
     }
@@ -174,13 +174,13 @@ class Checker
                 [
                     'domain' => $data->domain,
                 ], [
-                    'mx' => $data->mx,
-                    'disposable' => $data->disposable,
+                    'mx'           => $data->mx,
+                    'disposable'   => $data->disposable,
                     'last_queried' => Carbon::now(),
                 ]
             );
 
-            if (!$check->wasRecentlyCreated) {
+            if ( ! $check->wasRecentlyCreated) {
 
                 $check->hits++;
                 $check->last_queried = Carbon::now();
