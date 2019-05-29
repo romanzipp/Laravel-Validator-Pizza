@@ -18,15 +18,7 @@ A Laravel Wrapper for the [laravel.pizza](https://www.validator.pizza) disposabl
 composer require romanzipp/laravel-validator-pizza
 ```
 
-Or add `romanzipp/laravel-validator-pizza` to your `composer.json`
-
-```
-"romanzipp/laravel-validator-pizza": "*"
-```
-
-Run composer update to pull the latest version.
-
-**If you use Laravel 5.5+ you are already done, otherwise continue:**
+**If you use Laravel 5.5+ you are already done, otherwise continue.**
 
 ```php
 romanzipp\ValidatorPizza\Providers\ValidatorPizzaProvider::class,
