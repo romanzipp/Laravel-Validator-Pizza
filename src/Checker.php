@@ -73,7 +73,7 @@ class Checker
 
     /**
      * Check domain
-     * @param  string $domain
+     * @param string $domain
      * @return bool
      */
     public function allowedDomain(string $domain): bool
@@ -129,7 +129,7 @@ class Checker
 
     /**
      * Check email address
-     * @param  string $email
+     * @param string $email
      * @return bool
      */
     public function allowedEmail(string $email): bool
@@ -145,9 +145,9 @@ class Checker
 
     /**
      * Query the API
-     * @param  string            $domain
-     * @throws ClientException
+     * @param string $domain
      * @return \stdClass         API response data
+     * @throws ClientException
      */
     private function query(string $domain): \stdClass
     {
@@ -181,7 +181,8 @@ class Checker
 
         if ($this->store_checks) {
 
-            $check = ValidatedDomain::firstOrCreate(
+            /** @var ValidatedDomain $check */
+            $check = ValidatedDomain::query()->firstOrCreate(
                 [
                     'domain' => $data->domain,
                 ], [
@@ -203,7 +204,7 @@ class Checker
 
     /**
      * Decide wether the given data represents a valid domain
-     * @param  \stdClass $data
+     * @param \stdClass $data
      * @return bool
      */
     private function decideIsValid(\stdClass $data): bool
