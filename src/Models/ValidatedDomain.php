@@ -6,13 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ValidatedDomain extends Model
 {
-    protected $fillable = [
-        'domain',
-        'mx',
-        'disposable',
-        'hits',
-        'last_queried',
-    ];
+    protected $guarded = [];
 
     protected $dates = [
         'created_at',
