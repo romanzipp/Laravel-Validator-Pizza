@@ -3,6 +3,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/romanzipp/laravel-validator-pizza.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-validator-pizza)
 [![Total Downloads](https://img.shields.io/packagist/dt/romanzipp/laravel-validator-pizza.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-validator-pizza)
 [![License](https://img.shields.io/packagist/l/romanzipp/laravel-validator-pizza.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-validator-pizza)
+[![Build Status](https://img.shields.io/travis/romanzipp/Laravel-Validator-Pizza.svg?style=flat-square)](https://travis-ci.org/romanzipp/Laravel-Validator-Pizza)
 
 A Laravel Wrapper for the [laravel.pizza](https://www.validator.pizza) disposable email API made by [@tompec](https://github.com/tompec).
 
