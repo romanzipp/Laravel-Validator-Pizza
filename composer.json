@@ -15,9 +15,18 @@
         "laravel/framework": "^5.3|^6.0",
         "guzzlehttp/guzzle": "^6.2"
     },
+    "require-dev": {
+        "orchestra/testbench": "^4.4.0",
+        "phpunit/phpunit": "^8.0"
+    },
     "autoload": {
         "psr-4": {
-            "romanzipp\\ValidatorPizza\\": "/src"
+            "romanzipp\\ValidatorPizza\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "romanzipp\\ValidatorPizza\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -26,5 +35,8 @@
                 "romanzipp\\ValidatorPizza\\Providers\\ValidatorPizzaProvider"
             ]
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
