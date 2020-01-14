@@ -91,23 +91,23 @@ class Checker
 
         if ( ! $this->from_cache) {
 
-            try {
+            $response = $this->query($domain);
 
-                $data = $this->query($domain);
-
-            } catch (ClientException $e) {
-
-                // Rate Limit exceeded
-
-                if ($e->getResponse()->getStatusCode() == 429) {
-
-                    return $this->decision_rate_limit == 'allow' ? true : false;
-                }
-
-            } catch (\Exception $e) {
-
+            // The email address is invalid
+            if ($response->status == 400) {
                 return false;
             }
+
+            // Rate limit exceeded
+            if ($response->status == 429) {
+                return $this->decision_rate_limit == 'allow' ? true : false;
+            }
+
+            if ($response->status != 200) {
+                return false;
+            }
+
+            $data = $response;
         }
 
         // Store in Cache if enabled
@@ -157,11 +157,18 @@ class Checker
             'Accept' => 'application/json',
         ]);
 
-        $response = $this->client->send($request);
+        try {
+            $response = $this->client->send($request);
+        } catch (\Exception $e) {
+            return (object) [
+                'status' => $e->getResponse()->getStatusCode(),
+            ];
+        }
 
         $data = json_decode($response->getBody());
 
         return (object) [
+            'status'     => 200,
             'domain'     => $data->domain,
             'mx'         => optional($data)->mx ?? false,
             'disposable' => optional($data)->disposable ?? false,
