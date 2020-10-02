@@ -19,26 +19,18 @@ A Laravel Wrapper for the [Validator.pizza](https://www.validator.pizza) disposa
 composer require romanzipp/laravel-validator-pizza
 ```
 
-**If you use Laravel 5.5+ you are already done, otherwise continue.**
-
-```php
-romanzipp\ValidatorPizza\Providers\ValidatorPizzaProvider::class,
-```
-
-Add Service Provider to your app.php configuration file:
-
 ## Configuration
 
-Copy configuration to config folder:
+Copy configuration to your project:
 
 ```
-$ php artisan vendor:publish --provider="romanzipp\ValidatorPizza\Providers\ValidatorPizzaProvider"
+php artisan vendor:publish --provider="romanzipp\ValidatorPizza\Providers\ValidatorPizzaProvider"
 ```
 
 Run the migration:
 
 ```
-$ php artisan migrate
+php artisan migrate
 ```
 
 Change the config to your desired settings:
