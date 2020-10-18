@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Database storing
@@ -11,7 +10,7 @@ return [
     | stored to the database.
     |
     */
-   
+
     // Database storage enabled
     'store_checks' => true,
 
@@ -24,7 +23,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | It is recommended to cache requests due to API rate limitations.
-    | 
+    |
     */
 
     // Cache enabled (recommended)
@@ -39,9 +38,9 @@ return [
     |--------------------------------------------------------------------------
     |
     | Advanced configuration
-    | 
+    |
     */
-   
+
     // Determine which decision should be given if the rate limit is exceeded [allow / deny]
     'decision_rate_limit' => 'allow',
 
