@@ -12,7 +12,7 @@ use romanzipp\ValidatorPizza\Models\ValidatedDomain;
 class Checker
 {
     /**
-     * @var integer
+     * @var int
      */
     public $remaining = 0;
 
@@ -32,7 +32,7 @@ class Checker
     private $cache_checks;
 
     /**
-     * @var integer
+     * @var int
      */
     private $cache_duration;
 
@@ -52,7 +52,7 @@ class Checker
     private $client;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -72,8 +72,10 @@ class Checker
     }
 
     /**
-     * Check domain
+     * Check domain.
+     *
      * @param string $domain
+     *
      * @return bool
      */
     public function allowedDomain(string $domain): bool
@@ -83,27 +85,25 @@ class Checker
         // Retreive from Cache if enabled
 
         if ($this->cache_checks && Cache::has($cacheKey)) {
-
             $data = Cache::get($cacheKey);
 
             $this->from_cache = true;
         }
 
         if ( ! $this->from_cache) {
-
             $response = $this->query($domain);
 
             // The email address is invalid
-            if ($response->status == 400) {
+            if (400 == $response->status) {
                 return false;
             }
 
             // Rate limit exceeded
-            if ($response->status == 429) {
-                return $this->decision_rate_limit == 'allow' ? true : false;
+            if (429 == $response->status) {
+                return 'allow' == $this->decision_rate_limit ? true : false;
             }
 
-            if ($response->status != 200) {
+            if (200 != $response->status) {
                 return false;
             }
 
@@ -113,14 +113,12 @@ class Checker
         // Store in Cache if enabled
 
         if ($this->cache_checks && ! $this->from_cache) {
-
             Cache::put($cacheKey, $data, $this->cache_duration);
         }
 
         // Store in Database or update Database query hits
 
         if ($this->store_checks) {
-
             $this->storeResponse($data);
         }
 
@@ -128,8 +126,10 @@ class Checker
     }
 
     /**
-     * Check email address
+     * Check email address.
+     *
      * @param string $email
+     *
      * @return bool
      */
     public function allowedEmail(string $email): bool
@@ -144,10 +144,13 @@ class Checker
     }
 
     /**
-     * Query the API
+     * Query the API.
+     *
      * @param string $domain
-     * @return \stdClass         API response data
+     *
      * @throws ClientException
+     *
+     * @return \stdClass API response data
      */
     private function query(string $domain): \stdClass
     {
@@ -168,9 +171,9 @@ class Checker
         $data = json_decode($response->getBody());
 
         return (object) [
-            'status'     => 200,
-            'domain'     => $data->domain,
-            'mx'         => optional($data)->mx ?? false,
+            'status' => 200,
+            'domain' => $data->domain,
+            'mx' => optional($data)->mx ?? false,
             'disposable' => optional($data)->disposable ?? false,
         ];
     }
@@ -180,21 +183,19 @@ class Checker
         $this->remaining = $data->remaining_requests ?? 0;
 
         if ($this->store_checks) {
-
             /** @var ValidatedDomain $check */
             $check = ValidatedDomain::query()->firstOrCreate(
                 [
                     'domain' => $data->domain,
                 ], [
-                    'mx'           => $data->mx,
-                    'disposable'   => $data->disposable,
+                    'mx' => $data->mx,
+                    'disposable' => $data->disposable,
                     'last_queried' => Carbon::now(),
                 ]
             );
 
             if ( ! $check->wasRecentlyCreated) {
-
-                $check->hits++;
+                ++$check->hits;
                 $check->last_queried = Carbon::now();
 
                 $check->save();
@@ -203,16 +204,18 @@ class Checker
     }
 
     /**
-     * Decide wether the given data represents a valid domain
+     * Decide wether the given data represents a valid domain.
+     *
      * @param \stdClass $data
+     *
      * @return bool
      */
     private function decideIsValid(\stdClass $data): bool
     {
-        if ($this->decision_no_mx == 'deny' && optional($data)->mx !== true) {
+        if ('deny' == $this->decision_no_mx && true !== optional($data)->mx) {
             return false;
         }
 
-        return optional($data)->disposable === false;
+        return false === optional($data)->disposable;
     }
 }
