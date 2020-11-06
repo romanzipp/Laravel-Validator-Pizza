@@ -55,6 +55,9 @@ return [
 
     // Determine which decision should be given if the domain has no MX DNS record [allow / deny]
     'decision_no_mx' => 'allow',
+
+    // Makes use of the API key
+    'key' => env('VALIDATOR_PIZZA_KEY'),
 ];
 ```
 
