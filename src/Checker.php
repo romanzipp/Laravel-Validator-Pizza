@@ -52,6 +52,11 @@ class Checker
     private $client;
 
     /**
+     * @var string
+     */
+    private $key;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -69,6 +74,8 @@ class Checker
         $this->decision_rate_limit = config('validator-pizza.decision_rate_limit');
 
         $this->decision_no_mx = config('validator-pizza.decision_no_mx');
+
+        $this->key = config('validator-pizza.key');
     }
 
     /**
@@ -155,6 +162,10 @@ class Checker
     private function query(string $domain): \stdClass
     {
         $uri = '/domain/' . strtolower($domain);
+
+        if ($this->key) {
+            $uri .= '?key=' . $this->key;
+        }
 
         $request = new Request('GET', $uri, [
             'Accept' => 'application/json',
