@@ -7,7 +7,7 @@ use romanzipp\ValidatorPizza\Checker;
 class CheckerTest extends TestCase
 {
     /** @test **/
-    public function the_allowedDomain_function_returns_true_for_a_valid_domain()
+    public function theAllowedDomainFunctionReturnsTrueForAValidDomain()
     {
         $checker = (new Checker())->allowedDomain('validator.pizza');
 
@@ -15,7 +15,7 @@ class CheckerTest extends TestCase
     }
 
     /** @test **/
-    public function the_allowedDomain_function_returns_false_for_an_disposable_domain()
+    public function theAllowedDomainFunctionReturnsFalseForAnDisposableDomain()
     {
         $checker = (new Checker())->allowedDomain('mailinator.com');
 
@@ -23,7 +23,7 @@ class CheckerTest extends TestCase
     }
 
     /** @test **/
-    public function the_allowedDomain_function_returns_false_for_an_invalid_domain()
+    public function theAllowedDomainFunctionReturnsFalseForAnInvalidDomain()
     {
         $checker = (new Checker())->allowedDomain('t.t');
 
