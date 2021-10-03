@@ -3,7 +3,7 @@
 namespace romanzipp\ValidatorPizza;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -19,35 +19,35 @@ class Checker
     /**
      * @var bool
      */
-    public $from_cache;
+    public $fromCache;
 
     /**
      * @var bool
      */
-    private $store_checks;
+    private $storeChecks;
 
     /**
      * @var bool
      */
-    private $cache_checks;
+    private $cacheChecks;
 
     /**
      * @var int
      */
-    private $cache_duration;
+    private $cacheDuration;
 
     /**
      * @var string
      */
-    private $decision_rate_limit;
+    private $decisionRateLimit;
 
     /**
      * @var string
      */
-    private $decision_no_mx;
+    private $decisionNoMx;
 
     /**
-     * @var Client
+     * @var \GuzzleHttp\Client
      */
     private $client;
 
@@ -56,25 +56,17 @@ class Checker
      */
     private $key;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->client = new Client([
             'base_uri' => 'https://www.validator.pizza',
         ]);
 
-        $this->store_checks = config('validator-pizza.store_checks');
-
-        $this->cache_checks = config('validator-pizza.cache_checks');
-
-        $this->cache_duration = config('validator-pizza.cache_duration');
-
-        $this->decision_rate_limit = config('validator-pizza.decision_rate_limit');
-
-        $this->decision_no_mx = config('validator-pizza.decision_no_mx');
-
+        $this->storeChecks = config('validator-pizza.store_checks');
+        $this->cacheChecks = config('validator-pizza.cache_checks');
+        $this->cacheDuration = config('validator-pizza.cache_duration');
+        $this->decisionRateLimit = config('validator-pizza.decision_rate_limit');
+        $this->decisionNoMx = config('validator-pizza.decision_no_mx');
         $this->key = config('validator-pizza.key');
     }
 
@@ -88,16 +80,17 @@ class Checker
     public function allowedDomain(string $domain): bool
     {
         $cacheKey = 'validator_pizza_' . $domain;
+        $data = null;
 
         // Retreive from Cache if enabled
 
-        if ($this->cache_checks && Cache::has($cacheKey)) {
+        if ($this->cacheChecks && Cache::has($cacheKey)) {
             $data = Cache::get($cacheKey);
 
-            $this->from_cache = true;
+            $this->fromCache = true;
         }
 
-        if ( ! $this->from_cache) {
+        if ( ! $this->fromCache) {
             $response = $this->query($domain);
 
             // The email address is invalid
@@ -107,7 +100,7 @@ class Checker
 
             // Rate limit exceeded
             if (429 == $response->status) {
-                return 'allow' == $this->decision_rate_limit ? true : false;
+                return 'allow' == $this->decisionRateLimit ? true : false;
             }
 
             if (200 != $response->status) {
@@ -119,13 +112,13 @@ class Checker
 
         // Store in Cache if enabled
 
-        if ($this->cache_checks && ! $this->from_cache) {
-            Cache::put($cacheKey, $data, $this->cache_duration);
+        if ($this->cacheChecks && ! $this->fromCache) {
+            Cache::put($cacheKey, $data, $this->cacheDuration);
         }
 
         // Store in Database or update Database query hits
 
-        if ($this->store_checks) {
+        if ($this->storeChecks) {
             $this->storeResponse($data);
         }
 
@@ -145,7 +138,7 @@ class Checker
             return false;
         }
 
-        list($local, $domain) = explode('@', $email, 2);
+        [$local, $domain] = explode('@', $email, 2);
 
         return $this->allowedDomain($domain);
     }
@@ -155,7 +148,7 @@ class Checker
      *
      * @param string $domain
      *
-     * @throws ClientException
+     * @throws \GuzzleHttp\Exception\ClientException
      *
      * @return \stdClass API response data
      */
@@ -173,7 +166,7 @@ class Checker
 
         try {
             $response = $this->client->send($request);
-        } catch (\Exception $e) {
+        } catch (RequestException $e) {
             return (object) [
                 'status' => $e->getResponse()->getStatusCode(),
             ];
@@ -189,11 +182,11 @@ class Checker
         ];
     }
 
-    private function storeResponse(\stdClass $data)
+    private function storeResponse(\stdClass $data): void
     {
         $this->remaining = $data->remaining_requests ?? 0;
 
-        if ($this->store_checks) {
+        if ($this->storeChecks) {
             /** @var ValidatedDomain $check */
             $check = ValidatedDomain::query()->firstOrCreate(
                 [
@@ -223,7 +216,7 @@ class Checker
      */
     private function decideIsValid(\stdClass $data): bool
     {
-        if ('deny' == $this->decision_no_mx && true !== optional($data)->mx) {
+        if ('deny' == $this->decisionNoMx && true !== optional($data)->mx) {
             return false;
         }
 
