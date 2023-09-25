@@ -7,6 +7,10 @@
 
 A Laravel Wrapper for the [Validator.pizza](https://www.validator.pizza) disposable email API made by [@tompec](https://github.com/tompec).
 
+> # ⚠️ This package has been renamed
+> 
+> You can find the new project at [romanzipp/Laravel-MailCheck](https://github.com/romanzipp/Laravel-MailCheck).
+
 ## Features
 
 - Query the Validator.Pizza API for disposable Emails & Domains
