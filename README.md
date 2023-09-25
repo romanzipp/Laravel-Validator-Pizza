@@ -1,8 +1,9 @@
-# Laravel Validator.Pizza
-
 > # ⚠️ This package has been renamed
 >
-> You can find the new project at [romanzipp/Laravel-MailCheck](https://github.com/romanzipp/Laravel-MailCheck).
+> You can find the new project at [**romanzipp/Laravel-MailCheck**](https://github.com/romanzipp/Laravel-MailCheck). 
+> This repository will not get any updates anymore.
+
+# Laravel Validator.Pizza
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/romanzipp/laravel-validator-pizza.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-validator-pizza)
 [![Total Downloads](https://img.shields.io/packagist/dt/romanzipp/laravel-validator-pizza.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-validator-pizza)
