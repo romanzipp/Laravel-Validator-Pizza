@@ -3,6 +3,7 @@
     "description": "A Laravel Wrapper for the laravel.pizza disposable email API",
     "type": "library",
     "license": "MIT",
+    "abandoned": "romanzipp/laravel-mailcheck",
     "authors": [
         {
             "name": "romanzipp",
